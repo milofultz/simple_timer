@@ -4,7 +4,7 @@ from shutil import get_terminal_size
 import time
 
 from colors import Colors
-from config import DEFAULT_TIMER_LENGTH
+from config import DEFAULT_TIMER_LENGTH, DEFAULT_COMPLETE_MESSAGE
 
 
 TERMINAL_HEIGHT = get_terminal_size()[1]
@@ -47,8 +47,8 @@ def timer(timer_length: str):
         except KeyboardInterrupt:
             break
     if elapsed_seconds >= timer_length_seconds:
-        say("Timer complete")
-        alarm(5)
+        say(DEFAULT_COMPLETE_MESSAGE)
+        # alarm(5)
     clear_screen()
 
 
