@@ -1,6 +1,7 @@
 import os
 import re
 from shutil import get_terminal_size
+import sys
 import time
 
 from colors import Colors
@@ -11,10 +12,13 @@ TERMINAL_HEIGHT = get_terminal_size()[1]
 
 
 def main():
-    clear_screen()
-    print(Colors.WHITE + 'Default timer length is: ' +
-          Colors.RED + DEFAULT_TIMER_LENGTH + Colors.NORMAL + '\n')
-    timer_length = task_time_input(DEFAULT_TIMER_LENGTH)
+    if len(sys.argv) > 1 and re.match(r'^[0-5]?\d$', sys.argv[1]):
+        timer_length = f"0:{sys.argv[1].zfill(2)}"
+    else:
+        clear_screen()
+        print(Colors.WHITE + 'Default timer length is: ' +
+              Colors.RED + DEFAULT_TIMER_LENGTH + Colors.NORMAL + '\n')
+        timer_length = task_time_input(DEFAULT_TIMER_LENGTH)
     timer(timer_length)
 
 
@@ -25,18 +29,18 @@ def clear_screen():
 def task_time_input(default_time: str = None):
     """Validate task time input"""
     while True:
-        time_spent = input('Task Time: ')
-        if re.match(r'\d:[0-6]\d', time_spent):
-            return time_spent
-        elif re.match(r'[0-6]?\d', time_spent):
-            return f"0:{time_spent.zfill(2)}"
-        elif time_spent == '' and default_time:
+        length = input('Task Time: ')
+        if re.match(r'\d:[0-5]\d', length):
+            return length
+        elif re.match(r'^[0-5]?\d$', length):
+            return f"0:{length.zfill(2)}"
+        elif length == '' and default_time:
             return default_time
-        print('Please ensure your input matches `H:MM`.')
+        print('Please ensure your input matches `H:MM` or `MM`.')
 
 
 def timer(timer_length: str):
-    timer_length_seconds = convert_time_spent_to_seconds(timer_length)
+    timer_length_seconds = convert_length_to_seconds(timer_length)
     elapsed_seconds = 0
     while elapsed_seconds <= timer_length_seconds:
         try:
@@ -52,7 +56,7 @@ def timer(timer_length: str):
     clear_screen()
 
 
-def convert_time_spent_to_seconds(length: str):
+def convert_length_to_seconds(length: str):
     hours, minutes = length.split(':')
     return (int(hours) * 60 + int(minutes)) * 60
 
