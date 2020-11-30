@@ -5,6 +5,7 @@ import sys
 import time
 
 from colors import Colors
+from re_patterns import RegexPatterns
 from config import DEFAULT_TIMER_LENGTH, DEFAULT_COMPLETE_MESSAGE
 
 
@@ -12,7 +13,7 @@ TERMINAL_HEIGHT = get_terminal_size()[1]
 
 
 def main():
-    if len(sys.argv) > 1 and re.match(r'^[0-5]?\d$', sys.argv[1]):
+    if len(sys.argv) > 1 and re.match(RegexPatterns.MINUTES, sys.argv[1]):
         timer_length = f"0:{sys.argv[1].zfill(2)}"
     else:
         clear_screen()
@@ -30,9 +31,9 @@ def task_time_input(default_time: str = None):
     """Validate task time input"""
     while True:
         length = input('Task Time: ')
-        if re.match(r'\d:[0-5]\d', length):
+        if re.match(RegexPatterns.HOUR_MINUTES, length):
             return length
-        elif re.match(r'^[0-5]?\d$', length):
+        elif re.match(RegexPatterns.MINUTES, length):
             return f"0:{length.zfill(2)}"
         elif length == '' and default_time:
             return default_time
