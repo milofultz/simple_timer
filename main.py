@@ -7,6 +7,7 @@ import time
 from colors import Colors
 from re_patterns import RegexPatterns
 from config import DEFAULT_TIMER_LENGTH, DEFAULT_COMPLETE_MESSAGE
+from re_patterns import RegexPatterns
 
 
 TERMINAL_HEIGHT = get_terminal_size()[1]
