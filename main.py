@@ -13,8 +13,13 @@ TERMINAL_HEIGHT = get_terminal_size()[1]
 
 
 def main():
-    if len(sys.argv) > 1 and re.match(RegexPatterns.MINUTES, sys.argv[1]):
-        timer_length = f"0:{sys.argv[1].zfill(2)}"
+    if len(sys.argv) > 1 and (
+            re.match(RegexPatterns.MINUTES, sys.argv[1]) or 
+            re.match(RegexPatterns.HOUR_MINUTES_NO_COLON, sys.argv[1])):
+        arg = sys.argv[1]
+        timer_length = (f"0:{arg.zfill(2)}" 
+                        if len(arg) == 2 
+                        else f"{arg[0]}:{arg[1:]}")
     else:
         clear_screen()
         print(Colors.WHITE + 'Default timer length is: ' +
