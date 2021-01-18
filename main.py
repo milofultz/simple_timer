@@ -18,7 +18,7 @@ def main():
             re.match(RegexPatterns.HOUR_MINUTES_NO_COLON, sys.argv[1])):
         arg = sys.argv[1]
         timer_length = (f"0:{arg.zfill(2)}" 
-                        if len(arg) == 2 
+                        if len(arg) <= 2 
                         else f"{arg[0]}:{arg[1:]}")
     else:
         clear_screen()
